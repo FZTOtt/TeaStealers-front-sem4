@@ -1,11 +1,24 @@
 {
     "compilerOptions": {
+      "baseUrl": ".",
       "target": "es5",
       "module": "commonjs",
       "strict": true,
       "jsx": "react",
       "outDir": "./dist",
-      "esModuleInterop": true
+      "esModuleInterop": true,
+      "paths": {
+        "@components/*": ["./src/components/*"],
+        "@components/": ["./src/components"],
+        "@pages/*": ["./src/pages/*"],
+        "@pages": ["./src/pages"],
+        "@styles": ["./src/assets/styles"],
+        "@styles/*": ["./src/assets/styles/*"],
+        "@interfaces": ["./src/interfaces"],
+        "@interfaces/*": ["./src/interfaces/*"],
+        "@static": ["./src/static"],
+        "@static/*": ["./src/static/*"]
+      }
     },
     "include": ["src"]
   }

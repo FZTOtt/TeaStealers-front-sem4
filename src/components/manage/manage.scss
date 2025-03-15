@@ -1,0 +1,19 @@
+@use "@styles/variables.scss" as vars;
+
+.manage {
+    margin: 0 50px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+
+    button {
+        margin: 0 34px;
+    }
+
+    &__suggest {
+        display: flex;
+        justify-content: center;
+    }
+}
