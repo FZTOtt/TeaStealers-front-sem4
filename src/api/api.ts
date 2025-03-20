@@ -1,6 +1,7 @@
 import { postRequestFormData, getRequestFormData } from "./ajax";
 
-const API_BASE_URL = "http://localhost:8080/api";
+const API_BASE_URL = "http://146.185.211.161/api";
+// localhost:8080
 
 /*
     Запрос для распознавания аудио
