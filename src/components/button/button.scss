@@ -1,0 +1,20 @@
+@use "@styles/variables.scss" as vars;
+
+.button {
+    &_size {
+        &_sm {
+            // padding: vars.$button-padding-sm;
+            width: vars.$button-padding-sm;
+            height: vars.$button-padding-sm;
+        }
+        &_lg {
+            // padding: vars.$button-padding-lg;
+            width: vars.$button-padding-lg;
+            height: vars.$button-padding-lg;
+        }
+        &_md {
+            width: vars.$button-padding-md;
+            height: vars.$button-padding-md;
+        }
+    }
+}

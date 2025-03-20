@@ -1,0 +1,14 @@
+@use "@styles/variables.scss" as vars;
+
+.navbar {
+    height: vars.$navbar-height;
+    background-color: rosybrown;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &__logo {
+        font-size: 40px;
+        color: blue;
+    }
+}
