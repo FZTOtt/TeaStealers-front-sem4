@@ -3,10 +3,10 @@ import Button from "@components/button/button";
 import { translateAudio } from "../../api/api";
 import playOwnPassive from "@static/play_own_passive.jpg";
 import playOwnActive from "@static/play_own_active.jpg";
-import micOn from "@static/mic_on.jpg";
-import micOff from "@static/mic_off.jpg";
+import micOn from "@static/micon.svg";
+import micOff from "@static/micoff.svg";
 import repeat from "@static/again.jpg";
-import pass from "@static/next_word.jpg";
+import pass from "@static/next_word.svg";
 
 
 
@@ -77,7 +77,7 @@ const Manage: React.FC = () => {
         <div className="manage">
             <Button size="md" imgSrc={isRecorded ? playOwnActive : playOwnPassive} disabled = {!isRecorded} onClick={handlePlay}></Button>
             <Button size='lg' imgSrc={isRecording ? micOff : micOn} onClick={toggleRecording}></Button>
-            <Button size='md' imgSrc={pass} disabled = {true}></Button>
+            <Button size='md' imgSrc={pass} disabled = {true} className="manage__pass"></Button>
             
         </div>
         <div className="manage__suggest">
