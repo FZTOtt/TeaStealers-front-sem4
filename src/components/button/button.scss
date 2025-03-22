@@ -17,4 +17,11 @@
             height: vars.$button-padding-md;
         }
     }
+
+    &_correct {
+        background-color: vars.$button-correct;
+    }
+    &_incorrect {
+        background-color: vars.$button-incorrect;
+    }
 }

@@ -7,16 +7,19 @@ import micOn from "@static/micon.svg";
 import micOff from "@static/micoff.svg";
 import repeat from "@static/again.jpg";
 import pass from "@static/next_word.svg";
-
+import { useDispatch, useSelector } from "react-redux";
+import { setTranslatedAudio } from "@redux/translated";
+import { RootState } from "@redux/store";
 
 
 const Manage: React.FC = () => {
+    const dispatch = useDispatch();
+    const { translatedAudio, isCorrect, targetWord } = useSelector((state: RootState) => state.translated);
     const [isRecording, setIsRecording] = useState(false);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const audioChunksRef = useRef<Blob[]>([]);
     const [audioUrl, setAudioUrl] = useState<string | null>(null);
     const [isRecorded, setIsRecorded] = useState(false);
-    const [translatedAudio, setTransletadAudio] = useState<string | null>(null)
 
     const sendAudioToServer = async (audioBlob: Blob) => {
     
@@ -24,7 +27,7 @@ const Manage: React.FC = () => {
     
         if (status === 200) {
             console.log("Аудио успешно отправлено на сервер:", response);
-            setTransletadAudio(response.payload.transcription)
+            dispatch(setTranslatedAudio(response.payload.transcription));
 
         } else {
             console.error("Ошибка при отправке аудио:", response);
@@ -81,7 +84,7 @@ const Manage: React.FC = () => {
             
         </div>
         <div className="manage__suggest">
-            {translatedAudio ? `Мы распознали как ${translatedAudio}` : 'Нажмите для записи'}
+            {isRecording ? 'Нажмите для остановки' : translatedAudio ? `Мы распознали как ${translatedAudio}` : 'Нажмите для записи'}
         </div>
         </div>
     )
