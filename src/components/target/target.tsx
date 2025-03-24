@@ -38,8 +38,10 @@ const Target: React.FC = () => {
 
     return (
         <div className="target">
-            {targetWord}
-            <Button imgSrc={playTargetAudio} size="sm" className={isCorrect ? 'button_correct' : 'button_incorrect'} onClick={handlePlayAudio}></Button>
+            <span className={isCorrect === null ? '' : isCorrect ? 'target__word--correct' : 'target__word--incorrect'}>
+                {targetWord ? targetWord.charAt(0).toUpperCase() + targetWord.slice(1) : ''}
+            </span>
+            <Button imgSrc={playTargetAudio} size="sm" onClick={handlePlayAudio}></Button>
         </div>
     )
 }
