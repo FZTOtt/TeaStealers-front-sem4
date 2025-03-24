@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import translatedReducer from "./translated";
+import messagesReducer from "./messages";
 
 const store = configureStore({
     reducer: {
         translated: translatedReducer,
+        messages: messagesReducer,
     },
 });
 

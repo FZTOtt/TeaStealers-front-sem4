@@ -9,8 +9,6 @@ const API_BASE_URL = "https://ouzistudy.ru/api";
 export const translateAudio = async (audioBlob: Blob): Promise<[number, any]> => {
     const formData = new FormData();
     formData.append("file", audioBlob, "recording.wav");
-    console.log(formData)
-    
   
     return postRequestFormData(`${API_BASE_URL}/audio/translate_audio`, formData);
 };

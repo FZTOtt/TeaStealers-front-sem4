@@ -10,6 +10,7 @@ import pass from "@static/next_word.svg";
 import { useDispatch, useSelector } from "react-redux";
 import { setTranslatedAudio } from "@redux/translated";
 import { RootState } from "@redux/store";
+import { showMessage } from "@redux/messages";
 
 
 const Manage: React.FC = () => {
@@ -26,11 +27,15 @@ const Manage: React.FC = () => {
         const [status, response] = await translateAudio(audioBlob);
     
         if (status === 200) {
-            console.log("Аудио успешно отправлено на сервер:", response);
+            // console.log("Аудио успешно отправлено на сервер:", response);
             dispatch(setTranslatedAudio(response.payload.transcription));
 
         } else {
-            console.error("Ошибка при отправке аудио:", response);
+            // console.error("Ошибка при отправке аудио:", response);
+            dispatch(showMessage({
+                type: 'error',
+                message: response.error
+            }));
         }
     };
 
@@ -50,7 +55,7 @@ const Manage: React.FC = () => {
                 
                     const audioBlob = new Blob(audioChunksRef.current); //, { type: "form-data" }
                     const audioUrl = URL.createObjectURL(audioBlob);
-                    console.log("Запись завершена. Ссылка на аудио:", audioUrl);
+                    // console.log("Запись завершена. Ссылка на аудио:", audioUrl);
                     setAudioUrl(audioUrl);
                     setIsRecorded(true)
                     sendAudioToServer(audioBlob);
@@ -60,7 +65,11 @@ const Manage: React.FC = () => {
                 mediaRecorderRef.current.start();
                 setIsRecording(true);
             } catch (error) {
-                console.error("Ошибка доступа к микрофону:", error);
+                // console.error("Ошибка доступа к микрофону:", error);
+                dispatch(showMessage({
+                    type: 'error',
+                    message: "Ошибка доступа к микрофону. Проверьте доступ к микрофону и попробуйте снова"
+                }));
             }
         } else {
             mediaRecorderRef.current?.stop();
