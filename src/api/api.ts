@@ -1,6 +1,6 @@
 import { postRequestFormData, getRequestFormData } from "./ajax";
 
-const API_BASE_URL = "http://146.185.211.161/api";
+const API_BASE_URL = "https://ouzistudy.ru/api";
 // localhost:8080
 
 /*
