@@ -3,31 +3,39 @@ import Button from "@components/button/button";
 import { translateAudio } from "../../api/api";
 import playOwnPassive from "@static/play_own_passive.jpg";
 import playOwnActive from "@static/play_own_active.jpg";
-import micOn from "@static/mic_on.jpg";
-import micOff from "@static/mic_off.jpg";
+import micOn from "@static/micon.svg";
+import micOff from "@static/micoff.svg";
 import repeat from "@static/again.jpg";
-import pass from "@static/next_word.jpg";
-
+import pass from "@static/next_word.svg";
+import { useDispatch, useSelector } from "react-redux";
+import { setTranslatedAudio } from "@redux/translated";
+import { RootState } from "@redux/store";
+import { showMessage } from "@redux/messages";
 
 
 const Manage: React.FC = () => {
+    const dispatch = useDispatch();
+    const { translatedAudio, isCorrect, targetWord } = useSelector((state: RootState) => state.translated);
     const [isRecording, setIsRecording] = useState(false);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const audioChunksRef = useRef<Blob[]>([]);
     const [audioUrl, setAudioUrl] = useState<string | null>(null);
     const [isRecorded, setIsRecorded] = useState(false);
-    const [translatedAudio, setTransletadAudio] = useState<string | null>(null)
 
     const sendAudioToServer = async (audioBlob: Blob) => {
     
         const [status, response] = await translateAudio(audioBlob);
     
         if (status === 200) {
-            console.log("Аудио успешно отправлено на сервер:", response);
-            setTransletadAudio(response.payload.transcription)
+            // console.log("Аудио успешно отправлено на сервер:", response);
+            dispatch(setTranslatedAudio(response.payload.transcription));
 
         } else {
-            console.error("Ошибка при отправке аудио:", response);
+            // console.error("Ошибка при отправке аудио:", response);
+            dispatch(showMessage({
+                type: 'error',
+                message: response.error
+            }));
         }
     };
 
@@ -47,7 +55,7 @@ const Manage: React.FC = () => {
                 
                     const audioBlob = new Blob(audioChunksRef.current); //, { type: "form-data" }
                     const audioUrl = URL.createObjectURL(audioBlob);
-                    console.log("Запись завершена. Ссылка на аудио:", audioUrl);
+                    // console.log("Запись завершена. Ссылка на аудио:", audioUrl);
                     setAudioUrl(audioUrl);
                     setIsRecorded(true)
                     sendAudioToServer(audioBlob);
@@ -57,7 +65,11 @@ const Manage: React.FC = () => {
                 mediaRecorderRef.current.start();
                 setIsRecording(true);
             } catch (error) {
-                console.error("Ошибка доступа к микрофону:", error);
+                // console.error("Ошибка доступа к микрофону:", error);
+                dispatch(showMessage({
+                    type: 'error',
+                    message: "Ошибка доступа к микрофону. Проверьте доступ к микрофону и попробуйте снова"
+                }));
             }
         } else {
             mediaRecorderRef.current?.stop();
@@ -77,11 +89,11 @@ const Manage: React.FC = () => {
         <div className="manage">
             <Button size="md" imgSrc={isRecorded ? playOwnActive : playOwnPassive} disabled = {!isRecorded} onClick={handlePlay}></Button>
             <Button size='lg' imgSrc={isRecording ? micOff : micOn} onClick={toggleRecording}></Button>
-            <Button size='md' imgSrc={pass} disabled = {true}></Button>
+            <Button size='md' imgSrc={pass} disabled = {true} className="manage__pass"></Button>
             
         </div>
         <div className="manage__suggest">
-            {translatedAudio ? `Мы распознали как ${translatedAudio}` : 'Нажмите для записи'}
+            {isRecording ? 'Нажмите для остановки' : translatedAudio ? `Мы распознали как ${translatedAudio}` : 'Нажмите для записи'}
         </div>
         </div>
     )

@@ -1,6 +1,6 @@
 import { postRequestFormData, getRequestFormData } from "./ajax";
 
-const API_BASE_URL = "https://146.185.211.161/api";
+const API_BASE_URL = "https://ouzistudy.ru/api";
 // localhost:8080
 
 /*
@@ -9,8 +9,6 @@ const API_BASE_URL = "https://146.185.211.161/api";
 export const translateAudio = async (audioBlob: Blob): Promise<[number, any]> => {
     const formData = new FormData();
     formData.append("file", audioBlob, "recording.wav");
-    console.log(formData)
-    
   
     return postRequestFormData(`${API_BASE_URL}/audio/translate_audio`, formData);
 };

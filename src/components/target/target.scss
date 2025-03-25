@@ -8,5 +8,14 @@
     align-items: center;
     height: 100%;
 
-    font-size: 40px;
+    font-size: 60px;
+
+    &__word {
+        &--correct {
+            color: green;
+        }
+        &--incorrect {
+            color: red;
+        }
+    }
 }

@@ -37,13 +37,15 @@ export const postRequestFormData = async (
         });
   
         if (!response.ok) {
+            if (response.status === 504) {
+                return [response.status, { error: "Сервер недоступен, попробуйте позже" }];
+            }
             return [response.status, { error: "Ошибка при отправке запроса" }];
         }
   
         const body = await response.json();
         return [response.status, body];
     } catch (error) {
-        console.error("Ошибка при отправке запроса:", error);
         return [500, { error: "Сервер недоступен" }];
     }
 };

@@ -42,7 +42,8 @@ module.exports = {
       '@pages': path.resolve(__dirname, './src/pages/'),
       '@styles': path.resolve(__dirname, './src/assets/styles/'),
       '@interfaces': path.resolve(__dirname, './src/interfaces/'),
-      '@static': path.resolve(__dirname, './src/static')
+      '@static': path.resolve(__dirname, './src/static'),
+      '@redux': path.resolve(__dirname, './src/redux'),
     }
   },
   devServer: {
