@@ -49,3 +49,29 @@ export const postRequestFormData = async (
         return [500, { error: "Сервер недоступен" }];
     }
 };
+
+export const getRequest = async (
+    url: string
+) : Promise<[number, any]> => {
+    try {
+        const response = await fetch(url, {
+            method: "GET",
+            mode: "cors",
+            credentials: "include",
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json',
+              },
+        });
+
+        if (!response.ok) {
+            return [response.status, { error: "Ошибка при получении данных" }];
+        }
+
+        const body = await response.json();
+        return [response.status, body];
+
+    } catch (error) {
+        return [500, { error: "Сервер недоступен" }]
+    }
+}

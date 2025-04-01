@@ -1,4 +1,4 @@
-import { postRequestFormData, getRequestFormData } from "./ajax";
+import { postRequestFormData, getRequestFormData, getRequest } from "./ajax";
 
 const API_BASE_URL = "https://ouzistudy.ru/api";
 // localhost:8080
@@ -18,5 +18,5 @@ export const translateAudio = async (audioBlob: Blob): Promise<[number, any]> =>
 */
 export const getWord = async(word:string): Promise<[number, any]> => {
 
-    return getRequestFormData(`${API_BASE_URL}/word/get_word/${word}`)
+    return getRequest(`${API_BASE_URL}/word/${word}`)
 }
