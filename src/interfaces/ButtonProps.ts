@@ -5,5 +5,7 @@ export interface ButtonProps {
     disabled?: boolean;
     type?: "button" | "submit" | "reset";
     className?: string;
-    size?: "sm" | "md" | "lg";
+    size?: "sm" | "md" | "lg" | "logo_sm" | "logo_md" | "logo_lg";
+    children?: React.ReactNode;
+    divClass?: string;
   }

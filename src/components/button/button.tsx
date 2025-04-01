@@ -1,12 +1,12 @@
 import { ButtonProps } from "@interfaces/ButtonProps"
 import React from "react"
 
-const Button: React.FC<ButtonProps> = ({ text, imgSrc, onClick, disabled, type = "button", className, size = "sm" }) => {
+const Button: React.FC<ButtonProps> = ({ text, imgSrc, onClick, disabled, type = "button", className, size = "sm", children, divClass }) => {
 
     const buttonClass = `${className || ''} button_size_${size}`;
 
     return(
-        <div>
+        <div className={divClass}>
             <button
             type={type}
             onClick={onClick}
@@ -14,6 +14,7 @@ const Button: React.FC<ButtonProps> = ({ text, imgSrc, onClick, disabled, type =
             className={buttonClass}
             >
             {text? text:''}
+            {children}
             {imgSrc && <img src={imgSrc} alt="Button icon" />}
 
         </button>

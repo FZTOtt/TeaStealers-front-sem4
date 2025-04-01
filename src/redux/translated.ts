@@ -20,7 +20,7 @@ const translatedSlice = createSlice({
             state.translatedAudio = action.payload;
             state.isCorrect = state.translatedAudio?.toLowerCase() === state.targetWord?.toLowerCase();
         },
-        setTargetWord: (state, action) => {
+        setTargetWord: (state, action: PayloadAction<string>) => {
             state.targetWord = action.payload;
         },
     },

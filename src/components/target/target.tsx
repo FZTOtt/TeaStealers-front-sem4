@@ -41,7 +41,7 @@ const Target: React.FC = () => {
             <span className={isCorrect === null ? '' : isCorrect ? 'target__word--correct' : 'target__word--incorrect'}>
                 {targetWord ? targetWord.charAt(0).toUpperCase() + targetWord.slice(1) : ''}
             </span>
-            <Button imgSrc={playTargetAudio} size="sm" onClick={handlePlayAudio}></Button>
+            <Button imgSrc={playTargetAudio} size="logo_sm" onClick={handlePlayAudio}></Button>
         </div>
     )
 }

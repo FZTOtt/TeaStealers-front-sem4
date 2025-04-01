@@ -18,7 +18,7 @@ const Message: React.FC = () => {
 
             return () => clearTimeout(timer);
         }
-    }, [message, dispatch]);
+    }, [message]);
 
     const handleClose = () => {
         dispatch(hideMessage());

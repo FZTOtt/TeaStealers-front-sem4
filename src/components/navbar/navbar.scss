@@ -2,13 +2,33 @@
 
 .navbar {
     height: vars.$navbar-height;
-    background-color: rosybrown;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
+    background-color: vars.$navbar-backgroung-color;
+    border-bottom: 1px solid vars.$navbar-border-color;
+    box-shadow: 0 0 15px 0 rgba(0, 0, 0, 0.5);
+    border-radius: 3px;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    
     &__logo {
         font-size: 40px;
         color: blue;
+        margin: 0px;
+
+        &-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     }
+
+    &__statictic {
+        display: flex;
+        align-items: center;
+        margin-left: 40px;
+
+        &_btn {
+            background: none;
+        }
+    }
+
 }

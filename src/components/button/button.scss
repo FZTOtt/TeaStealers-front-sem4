@@ -1,27 +1,33 @@
 @use "@styles/variables.scss" as vars;
 
 .button {
-    &_size {
+    &_size_logo {
         &_sm {
             // padding: vars.$button-padding-sm;
-            width: vars.$button-padding-sm;
-            height: vars.$button-padding-sm;
+            width: vars.$button-size-sm;
+            height: vars.$button-size-sm;
         }
         &_lg {
             // padding: vars.$button-padding-lg;
-            width: vars.$button-padding-lg;
-            height: vars.$button-padding-lg;
+            width: vars.$button-size-lg;
+            height: vars.$button-size-lg;
         }
         &_md {
-            width: vars.$button-padding-md;
-            height: vars.$button-padding-md;
+            width: vars.$button-size-md;
+            height: vars.$button-size-md;
         }
     }
 
-    &_correct {
-        background-color: vars.$button-correct;
-    }
-    &_incorrect {
-        background-color: vars.$button-incorrect;
+    &_size {
+        &_sm {
+            padding: vars.$button-padding-sm;
+            border-radius: vars.$button-border-radius-sm;
+        }
+        &_lg {
+            padding: vars.$button-padding-lg;
+        }
+        &_md {
+            padding: vars.$button-padding-md;
+        }
     }
 }

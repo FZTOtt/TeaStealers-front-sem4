@@ -87,9 +87,9 @@ const Manage: React.FC = () => {
     return (
         <div>
         <div className="manage">
-            <Button size="md" imgSrc={isRecorded ? playOwnActive : playOwnPassive} disabled = {!isRecorded} onClick={handlePlay}></Button>
-            <Button size='lg' imgSrc={isRecording ? micOff : micOn} onClick={toggleRecording}></Button>
-            <Button size='md' imgSrc={pass} disabled = {true} className="manage__pass"></Button>
+            <Button size="logo_md" imgSrc={isRecorded ? playOwnActive : playOwnPassive} disabled = {!isRecorded} onClick={handlePlay}></Button>
+            <Button size='logo_lg' imgSrc={isRecording ? micOff : micOn} onClick={toggleRecording}></Button>
+            <Button size='logo_md' imgSrc={pass} disabled = {true} className="manage__pass"></Button>
             
         </div>
         <div className="manage__suggest">
