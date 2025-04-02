@@ -23,8 +23,8 @@ const Manage: React.FC = () => {
     const [audioUrl, setAudioUrl] = useState<string | null>(null);
     const [isRecorded, setIsRecorded] = useState(false);
 
-    const fetchWord = async () => {
-            const [status, response] = await getWord('hello');
+    const fetchWord = async (word: string) => {
+            const [status, response] = await getWord(word);
             console.log(status, response)
     
             if (status===200) {
@@ -60,7 +60,7 @@ const Manage: React.FC = () => {
     
     useEffect(() => {
         if (!targetWord) {
-            fetchWord()
+            fetchWord('hello')
         }
     }, [])
 
@@ -127,7 +127,7 @@ const Manage: React.FC = () => {
     }
 
     const getNextWord = () => {
-        fetchWord()
+        fetchWord('interesting')
     }
 
     const handleRepeat = () => {
