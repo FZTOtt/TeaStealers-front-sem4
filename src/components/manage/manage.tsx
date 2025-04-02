@@ -139,7 +139,7 @@ const Manage: React.FC = () => {
             <div className="manage">
                 <Button size="md" imgSrc={isRecorded ? playOwnActive : playOwnPassive} disabled = {!isRecorded} onClick={handlePlay}></Button>
                 <Button size='lg' imgSrc={isCorrect ? pass : isRecording ? micOff : micOn} onClick={isCorrect ? getNextWord : toggleRecording}></Button>
-                <Button size='md' imgSrc={isCorrect ? repeat : pass} disabled = {isCorrect || false} className="manage__pass" onClick={isCorrect ? handleRepeat : getNextWord}></Button>
+                <Button size='md' imgSrc={isCorrect ? repeat : pass} className="manage__pass" onClick={isCorrect ? handleRepeat : getNextWord}></Button>
                 
             </div>
             <div className="manage__suggest">
