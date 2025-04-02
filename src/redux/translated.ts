@@ -22,6 +22,7 @@ const translatedSlice = createSlice({
         },
         setTargetWord: (state, action) => {
             state.targetWord = action.payload;
+            state.isCorrect = null;
         },
     },
 });

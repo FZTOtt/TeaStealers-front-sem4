@@ -59,7 +59,7 @@ export const getRequest = async (
             mode: "cors",
             credentials: "include",
             headers: {
-                'Content-Type': 'application/json',
+                // 'Content-Type': 'application/json',
                 Accept: 'application/json',
               },
         });
@@ -69,9 +69,33 @@ export const getRequest = async (
         }
 
         const body = await response.json();
-        return [response.status, body];
+        return [response.status, body.payload];
 
     } catch (error) {
         return [500, { error: "Сервер недоступен" }]
     }
 }
+
+export const postRequest = async (
+    url: string,
+    data: any
+) : Promise<[number, any]> => {
+    const response = await fetch(url, {
+        method: "POST",
+        mode: "cors",
+        credentials: "include",
+        headers: {
+            "Content-Type": "application/json",
+            "Accept": "application/json",
+        },
+        body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+        return [response.status, { error: "Ошибка при отправке запроса" }];
+    }
+
+    const body = await response.json();
+    return [response.status, body];
+}
+

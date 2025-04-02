@@ -1,39 +1,68 @@
 import Button from "@components/button/button";
 import React, { useEffect, useState } from "react";
 import playTargetAudio from "@static/play_target_audio.jpg"; 
-import { getWord } from "../../api/api";
+import { addStatistics, getWord } from "../../api/api";
 import { useDispatch, useSelector } from "react-redux";
 import { setTargetWord } from "@redux/translated";
 import { RootState } from "@redux/store";
+import { showMessage } from "@redux/messages";
 
 const Target: React.FC = () => {
     const dispatch = useDispatch();
     const { targetWord, translatedAudio, isCorrect } = useSelector((state: RootState) => state.translated);
-    const [audioBlob, setAudioBlob] = useState<Blob | null>(null);
+    const [audioUrl, setAudioUrl] = useState<string | null>(null);
 
     useEffect (() => {
         const fetchWord = async () => {
             const [status, response] = await getWord('hello');
             console.log(status, response)
-            console.log(response.text)
 
             if (status===200) {
-                setAudioBlob(response.audioBlob);
-                dispatch(setTargetWord(response.text));
+                let url = response.link;
+                url = url.replace(/http:\/\/[^\/]+/, 'https://ouzistudy.ru/minio');
+                url = url.replace(/&/g, '\\u0026');
+                setAudioUrl(url);
+                console.log(url)
+                dispatch(setTargetWord(response.word));
             } else {
                 console.error("Ошибка при получении данных:", response);
             }
         };
 
         fetchWord();
-    }, [dispatch])
+    }, [])
+
+    useEffect(() => {
+
+        const sendStats = async () => {
+            if (isCorrect !== null && targetWord !== null) {
+                try {
+                    const [status, response] = await addStatistics(targetWord, isCorrect);
+                    console.log(status, response)
+                    if (status !== 200 && response.sucess !== true) {
+                        dispatch(showMessage({
+                            type: 'error',
+                            message: 'Не удалось сохранить статистику'
+                        }));
+                    }
+                } catch (error) {
+                    dispatch(showMessage({
+                        type: 'error',
+                        message: 'Ошибка при сохранении статистики'
+                    }));
+                }
+            }
+        };
+    
+        sendStats();
+
+    }, [isCorrect, targetWord])
 
     const handlePlayAudio = () => {
-        if (audioBlob) {
-            const audioUrl = URL.createObjectURL(audioBlob);
+        if (audioUrl) {
             const audio = new Audio(audioUrl);
             audio.play();
-            }
+        }
     };
 
     return (

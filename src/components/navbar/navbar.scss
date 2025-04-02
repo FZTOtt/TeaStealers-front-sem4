@@ -6,9 +6,19 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    position: relative;
 
     &__logo {
         font-size: 40px;
         color: blue;
+        cursor: pointer;
+    }
+
+    &__statictic_btn {
+        position: absolute;
+        left: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        background: none;
     }
 }
