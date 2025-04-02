@@ -4,12 +4,14 @@ interface TranslatedState {
     translatedAudio: string | null;
     isCorrect: boolean | null;
     targetWord: string | null;
+    targetAudioUrl: string | null;
 }
 
 const initialState: TranslatedState = {
     translatedAudio: null,
     isCorrect: null,
     targetWord: null,
+    targetAudioUrl: null,
 }
 
 const translatedSlice = createSlice({
@@ -24,8 +26,11 @@ const translatedSlice = createSlice({
             state.targetWord = action.payload;
             state.isCorrect = null;
         },
+        setTargetAudioUrl: (state, action: PayloadAction<string>) => {
+            state.targetAudioUrl = action.payload;
+        },
     },
 });
 
-export const { setTranslatedAudio, setTargetWord } = translatedSlice.actions;
+export const { setTranslatedAudio, setTargetWord, setTargetAudioUrl } = translatedSlice.actions;
 export default translatedSlice.reducer;

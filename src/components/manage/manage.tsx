@@ -1,6 +1,6 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import Button from "@components/button/button";
-import { translateAudio } from "../../api/api";
+import { addStatistics, translateAudio, getWord } from "../../api/api";
 import playOwnPassive from "@static/play_own_passive.jpg";
 import playOwnActive from "@static/play_own_active.jpg";
 import micOn from "@static/micon.svg";
@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setTranslatedAudio } from "@redux/translated";
 import { RootState } from "@redux/store";
 import { showMessage } from "@redux/messages";
+import { setTargetWord, setTargetAudioUrl } from "@redux/translated";
 
 
 const Manage: React.FC = () => {
@@ -22,16 +23,58 @@ const Manage: React.FC = () => {
     const [audioUrl, setAudioUrl] = useState<string | null>(null);
     const [isRecorded, setIsRecorded] = useState(false);
 
+    const fetchWord = async () => {
+            const [status, response] = await getWord('hello');
+            console.log(status, response)
+    
+            if (status===200) {
+                let url = response.link;
+                url = url.replace(/http:\/\/[^\/]+/, 'https://ouzistudy.ru/minio');
+                url = url.replace(/&/g, '\\u0026');
+                dispatch(setTargetWord(response.word));
+                dispatch(setTargetAudioUrl(url))
+            } else {
+                console.error("Ошибка при получении данных:", response);
+            }
+        };
+
+    const sendStats = async () => {
+        if (isCorrect !== null && targetWord !== null) {
+            try {
+                const [status, response] = await addStatistics(targetWord, isCorrect);
+                console.log(status, response)   
+                if (status !== 200 && response.sucess !== true) {
+                    dispatch(showMessage({
+                        type: 'error',
+                        message: 'Не удалось сохранить статистику'
+                    }));
+                }
+            } catch (error) {
+                dispatch(showMessage({
+                    type: 'error',
+                    message: 'Ошибка при сохранении статистики'
+                }));
+            }
+        }
+    };
+    
+    useEffect(() => {
+        if (!targetWord) {
+            fetchWord()
+        }
+    }, [])
+
     const sendAudioToServer = async (audioBlob: Blob) => {
     
         const [status, response] = await translateAudio(audioBlob);
     
         if (status === 200) {
-            // console.log("Аудио успешно отправлено на сервер:", response);
             dispatch(setTranslatedAudio(response.payload.transcription));
+            if (isCorrect) {
+                sendStats();
+            }
 
         } else {
-            // console.error("Ошибка при отправке аудио:", response);
             dispatch(showMessage({
                 type: 'error',
                 message: response.error
@@ -55,7 +98,6 @@ const Manage: React.FC = () => {
                 
                     const audioBlob = new Blob(audioChunksRef.current); //, { type: "form-data" }
                     const audioUrl = URL.createObjectURL(audioBlob);
-                    // console.log("Запись завершена. Ссылка на аудио:", audioUrl);
                     setAudioUrl(audioUrl);
                     setIsRecorded(true)
                     sendAudioToServer(audioBlob);
@@ -65,7 +107,6 @@ const Manage: React.FC = () => {
                 mediaRecorderRef.current.start();
                 setIsRecording(true);
             } catch (error) {
-                // console.error("Ошибка доступа к микрофону:", error);
                 dispatch(showMessage({
                     type: 'error',
                     message: "Ошибка доступа к микрофону. Проверьте доступ к микрофону и попробуйте снова"
@@ -84,17 +125,26 @@ const Manage: React.FC = () => {
             audio.play();
         };
     }
+
+    const getNextWord = () => {
+        fetchWord()
+    }
+
+    const handleRepeat = () => {
+        dispatch(setTargetWord(targetWord));
+    };
+
     return (
         <div>
-        <div className="manage">
-            <Button size="md" imgSrc={isRecorded ? playOwnActive : playOwnPassive} disabled = {!isRecorded} onClick={handlePlay}></Button>
-            <Button size='lg' imgSrc={isRecording ? micOff : micOn} onClick={toggleRecording}></Button>
-            <Button size='md' imgSrc={pass} disabled = {true} className="manage__pass"></Button>
-            
-        </div>
-        <div className="manage__suggest">
-            {isRecording ? 'Нажмите для остановки' : translatedAudio ? `Мы распознали как ${translatedAudio}` : 'Нажмите для записи'}
-        </div>
+            <div className="manage">
+                <Button size="md" imgSrc={isRecorded ? playOwnActive : playOwnPassive} disabled = {!isRecorded} onClick={handlePlay}></Button>
+                <Button size='lg' imgSrc={isCorrect ? pass : isRecording ? micOff : micOn} onClick={isCorrect ? getNextWord : toggleRecording}></Button>
+                <Button size='md' imgSrc={isCorrect ? repeat : pass} disabled = {isCorrect || false} className="manage__pass" onClick={isCorrect ? handleRepeat : getNextWord}></Button>
+                
+            </div>
+            <div className="manage__suggest">
+                {isRecording ? 'Нажмите для остановки' : translatedAudio ? `Мы распознали как ${translatedAudio}` : 'Нажмите для записи'}
+            </div>
         </div>
     )
 }

@@ -9,58 +9,11 @@ import { showMessage } from "@redux/messages";
 
 const Target: React.FC = () => {
     const dispatch = useDispatch();
-    const { targetWord, translatedAudio, isCorrect } = useSelector((state: RootState) => state.translated);
-    const [audioUrl, setAudioUrl] = useState<string | null>(null);
-
-    useEffect (() => {
-        const fetchWord = async () => {
-            const [status, response] = await getWord('hello');
-            console.log(status, response)
-
-            if (status===200) {
-                let url = response.link;
-                url = url.replace(/http:\/\/[^\/]+/, 'https://ouzistudy.ru/minio');
-                url = url.replace(/&/g, '\\u0026');
-                setAudioUrl(url);
-                console.log(url)
-                dispatch(setTargetWord(response.word));
-            } else {
-                console.error("Ошибка при получении данных:", response);
-            }
-        };
-
-        fetchWord();
-    }, [])
-
-    useEffect(() => {
-
-        const sendStats = async () => {
-            if (isCorrect !== null && targetWord !== null) {
-                try {
-                    const [status, response] = await addStatistics(targetWord, isCorrect);
-                    console.log(status, response)   
-                    if (status !== 200 && response.sucess !== true) {
-                        dispatch(showMessage({
-                            type: 'error',
-                            message: 'Не удалось сохранить статистику'
-                        }));
-                    }
-                } catch (error) {
-                    dispatch(showMessage({
-                        type: 'error',
-                        message: 'Ошибка при сохранении статистики'
-                    }));
-                }
-            }
-        };
-    
-        sendStats();
-
-    }, [isCorrect, targetWord])
+    const { targetWord, isCorrect, targetAudioUrl } = useSelector((state: RootState) => state.translated);
 
     const handlePlayAudio = () => {
-        if (audioUrl) {
-            const audio = new Audio(audioUrl);
+        if (targetAudioUrl) {
+            const audio = new Audio(targetAudioUrl);
             audio.play();
         }
     };
