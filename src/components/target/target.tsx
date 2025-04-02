@@ -38,7 +38,7 @@ const Target: React.FC = () => {
             if (isCorrect !== null && targetWord !== null) {
                 try {
                     const [status, response] = await addStatistics(targetWord, isCorrect);
-                    console.log(status, response)
+                    console.log(status, response)   
                     if (status !== 200 && response.sucess !== true) {
                         dispatch(showMessage({
                             type: 'error',
