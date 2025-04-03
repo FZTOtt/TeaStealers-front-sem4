@@ -1,9 +1,11 @@
+import TargetDispatch from "@interfaces/targetDispatch";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface TranslatedState {
     translatedAudio: string | null;
     isCorrect: boolean | null;
     targetWord: string | null;
+    targetTranscription: string | null;
     targetAudioUrl: string | null;
 }
 
@@ -11,6 +13,7 @@ const initialState: TranslatedState = {
     translatedAudio: null,
     isCorrect: null,
     targetWord: null,
+    targetTranscription: null,
     targetAudioUrl: null,
 }
 
@@ -22,8 +25,9 @@ const translatedSlice = createSlice({
             state.translatedAudio = action.payload;
             state.isCorrect = state.translatedAudio?.toLowerCase() === state.targetWord?.toLowerCase();
         },
-        setTargetWord: (state, action) => {
-            state.targetWord = action.payload;
+        setTargetWord: (state, action: PayloadAction<TargetDispatch>) => {
+            state.targetWord = action.payload.targetWord;
+            state.targetTranscription = action.payload.targetTranscription;
             state.isCorrect = null;
         },
         setTargetAudioUrl: (state, action: PayloadAction<string>) => {

@@ -3,7 +3,7 @@
 .target {
     margin: 0 50px;
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
@@ -11,11 +11,29 @@
     font-size: 60px;
 
     &__word {
+
+        &-container {
+            position: relative;
+            display: inline-block;
+        }
+
         &--correct {
             color: green;
         }
         &--incorrect {
             color: red;
         }
+    }
+
+    &__audio-button {
+        position: absolute;
+        top: 0;
+        left: 100%;
+        margin-left: 10px;
+    }
+
+    &__transcription {
+        font-size: 20px;
+        margin-top: 10px;
     }
 }

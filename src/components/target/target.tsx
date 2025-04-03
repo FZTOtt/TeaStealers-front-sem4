@@ -1,15 +1,11 @@
 import Button from "@components/button/button";
 import React, { useEffect, useState } from "react";
 import playTargetAudio from "@static/play_target_audio.jpg"; 
-import { addStatistics, getWord } from "../../api/api";
-import { useDispatch, useSelector } from "react-redux";
-import { setTargetWord } from "@redux/translated";
+import { useSelector } from "react-redux";
 import { RootState } from "@redux/store";
-import { showMessage } from "@redux/messages";
 
 const Target: React.FC = () => {
-    const dispatch = useDispatch();
-    const { targetWord, isCorrect, targetAudioUrl } = useSelector((state: RootState) => state.translated);
+    const { targetWord, isCorrect, targetAudioUrl, targetTranscription } = useSelector((state: RootState) => state.translated);
 
     const handlePlayAudio = () => {
         if (targetAudioUrl) {
@@ -20,10 +16,15 @@ const Target: React.FC = () => {
 
     return (
         <div className="target">
-            <span className={isCorrect === null ? '' : isCorrect ? 'target__word--correct' : 'target__word--incorrect'}>
-                {targetWord ? targetWord.charAt(0).toUpperCase() + targetWord.slice(1) : ''}
+            <div className="target__word-container">
+                <span className={isCorrect === null ? '' : isCorrect ? 'target__word--correct' : 'target__word--incorrect'}>
+                    {targetWord ? targetWord.charAt(0).toUpperCase() + targetWord.slice(1) : ''}
+                </span>
+                <Button imgSrc={playTargetAudio} size="sm" onClick={handlePlayAudio} divClass="target__audio-button" />
+            </div>
+            <span className="target__transcription">
+                {targetTranscription}
             </span>
-            <Button imgSrc={playTargetAudio} size="sm" onClick={handlePlayAudio}></Button>
         </div>
     )
 }

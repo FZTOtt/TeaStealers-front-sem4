@@ -6,4 +6,5 @@ export interface ButtonProps {
     type?: "button" | "submit" | "reset";
     className?: string;
     size?: "sm" | "md" | "lg";
+    divClass?: string;
   }

@@ -12,11 +12,12 @@ import { setTranslatedAudio } from "@redux/translated";
 import { RootState } from "@redux/store";
 import { showMessage } from "@redux/messages";
 import { setTargetWord, setTargetAudioUrl } from "@redux/translated";
+import TargetDispatch from "@interfaces/targetDispatch";
 
 
 const Manage: React.FC = () => {
     const dispatch = useDispatch();
-    const { translatedAudio, isCorrect, targetWord } = useSelector((state: RootState) => state.translated);
+    const { translatedAudio, isCorrect, targetWord, targetTranscription } = useSelector((state: RootState) => state.translated);
     const [isRecording, setIsRecording] = useState(false);
     const mediaRecorderRef = useRef<MediaRecorder | null>(null);
     const audioChunksRef = useRef<Blob[]>([]);
@@ -31,7 +32,11 @@ const Manage: React.FC = () => {
                 let url = response.link;
                 url = url.replace(/http:\/\/[^\/]+/, 'https://ouzistudy.ru/minio');
                 url = url.replace(/&/g, '\\u0026');
-                dispatch(setTargetWord(response.word));
+                const targetDispatch: TargetDispatch = {
+                    'targetWord': response.word,
+                    'targetTranscription': response.transcription
+                }
+                dispatch(setTargetWord(targetDispatch));
                 dispatch(setTargetAudioUrl(url))
             } else {
                 console.error("Ошибка при получении данных:", response);
@@ -131,7 +136,10 @@ const Manage: React.FC = () => {
     }
 
     const handleRepeat = () => {
-        dispatch(setTargetWord(targetWord));
+        dispatch(setTargetWord({
+            'targetWord': targetWord ? targetWord : 'empty',
+            'targetTranscription': targetTranscription ? targetTranscription : 'epmty'
+        }));
     };
 
     return (
